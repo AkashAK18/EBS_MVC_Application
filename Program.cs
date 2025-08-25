@@ -24,9 +24,9 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login";        // redirect if not logged in
-        options.LogoutPath = "/Account/Logout";      // optional
-        options.AccessDeniedPath = "/Account/AccessDenied"; // optional
+        options.LoginPath = "/Account/Login";        
+        options.LogoutPath = "/Account/Logout";     
+        options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
 // Sessions
@@ -50,12 +50,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseSession();           // <-- important (before authorization if you add it)
+app.UseSession();           
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Areas first, then default route
+
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Event}/{action=Index}/{id?}");
