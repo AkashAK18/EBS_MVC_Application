@@ -1,0 +1,46 @@
+﻿@model IEnumerable<EventBookingSystem.Models.Event>
+@{
+    ViewData["Title"] = "Events";
+}
+<center><h2 class="mb-4">All Events</h2>
+
+<form method="get" class="d-flex mb-3" style="max-width: 400px;">
+    <input class="form-control me-2" type="text" name="q" value="@ViewBag.Search" placeholder="Search...">
+    <button class="btn btn-primary" type="submit">Go</button>
+    <a class="btn btn-secondary ms-2" asp-action="Index" asp-route-clear="true">Clear</a>
+</form>
+</center>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No events found.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var e in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@e.Title</h5>
+                        <p class="card-text text-muted mb-1">
+                            📅 @e.EventDate.ToString("dd MMM yyyy, hh:mm tt")
+                        </p>
+                        <p class="card-text mb-1">
+                            📍 @e.Location
+                        </p>
+                        <p class="card-text">
+                            Seats: <strong>@e.AvailableSeats</strong> / @e.TotalSeats
+                        </p>
+                        <form asp-area="User" asp-controller="Booking" asp-action="Book" asp-route-eventId="@e.EventId" method="post">
+                            <button class="btn btn-success w-100" type="submit" @(e.AvailableSeats <= 0 ? "disabled" : "")>
+                                @(e.AvailableSeats > 0 ? "Book Now" : "Sold Out")
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
